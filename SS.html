@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Панель управления</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; }
+  .dashboard { display: flex; flex-wrap: wrap; gap: 20px; }
+  .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+  .title { font-size: 24px; font-weight: bold; }
+  .subtitle { font-size: 16px; color: #666; }
+  .button { display: inline-block; background-color: #ffc107; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+  .timer { font-size: 48px; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="dashboard">
+  <div class="card" style="flex-basis: 100%;">
+    <span class="title">Сегодня</span>
+    <span class="subtitle" id="current-time">пн 25.11, 12:00</span>
+  </div>
+  <div class="card">
+    <div class="title">Еженедельная активность: 0%</div>
+  </div>
+  <div class="card">
+    <div class="title">Работа на неделю: 48:00:05</div>
+  </div>
+  <div class="card">
+    <div class="title">Проект в разработке: 02</div>
+  </div>
+  <div class="card" style="flex-basis: 100%;">
+    <div class="title">Проекты</div>
+    <ul>
+      <li>Алгебра - 00:40:00</li>
+      <li>История России - 00:30:00</li>
+      <li>Философия - 00:20:00</li>
+      <li>Математика - 00:30:00</li>
+    </ul>
+  </div>
+  <div class="card" style="flex-basis: 100%;">
+    <div class="title">Задачи</div>
+    <ul>
+      <li>Написать конспект - 00:40:00</li>
+      <li>Подготовить доклад - 00:20:00</li>
+    </ul>
+  </div>
+  <div class="card">
+    <button class="button" onclick="startTimer()">Запустить трекер времени</button>
+    <div class="timer" id="timer">00:00:00</div>
+  </div>
+</div>
+
+<script>
+  function updateTime() {
+    var now = new Date();
+    var days = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+    var day = days[now.getDay()];
+    var date = now.getDate().toString().padStart(2, '0');
+    var month = (now.getMonth() + 1).toString().padStart(2, '0');
+    var hours = now.getHours().toString().padStart(2, '0');
+    var minutes = now.getMinutes().toString().padStart(2, '0');
+    var seconds = now.getSeconds().toString().padStart(2, '0');
+    document.getElementById('current-time').textContent = `${day} ${date}.${month}, ${hours}:${minutes}:${seconds}`;
+  }
+
+  setInterval(updateTime, 1000);
+
+  var timerInterval;
+  function startTimer() {
+    clearInterval(timerInterval);
+    var startTime = Date.now();
+    timerInterval = setInterval(function() {
+      var elapsedTime = Date.now() - startTime;
+      var hours = Math.floor(elapsedTime / 3600000).toString().padStart(2, '0');
+      var minutes = Math.floor((elapsedTime % 3600000) / 60000).toString().padStart(2, '0');
+      var seconds = Math.floor((elapsedTime % 60000) / 1000).toString().padStart(2, '0');
+      document.getElementById('timer').textContent = hours + ':' + minutes + ':' + seconds;
+    }, 1000);
+  }
+</script>
+</body>
+</html>
